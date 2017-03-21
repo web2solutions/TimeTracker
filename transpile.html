@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <script src="https://google.github.io/traceur-compiler/bin/traceur.js"></script>
+    <script src="https://google.github.io/traceur-compiler/bin/BrowserSystem.js"></script>
+    <script src="https://google.github.io/traceur-compiler/src/bootstrap.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.6.5/babel.min.js"></script>
+    
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="text/babel" src="scripts/person.js"></script>
+    <script type="module">
+      import person from 'scripts/person.js';
+      var jhon = new  person('Jhon');
+      console.log( jhon );
+    </script>
+    <script>
+    console.log( 1 );
+      // Get all the babel scripts
+      var babel_scripts = document.querySelectorAll('script[type="text/babel"]');
+      // Loop over them
+      Array.prototype.forEach.call(babel_scripts, function (script, index, arr) {
+        // Get their contents
+        var input = script.textContent;
+        // Transform/Transpile/Compile
+        var output = Babel.transform( input, { presets: ['es2015', 'react'] }).code;
+
+        // Create a new script tag of `javascript` type
+        var new_script = document.createElement('script');
+        new_script.setAttribute('type', 'text/javascript');
+        // Set the contents of the script to the transpiled code
+        new_script.textContent = output;
+
+        // Remove the babel script
+        script.remove();
+        // Inject the new transpiled JS
+        document.querySelector('body').appendChild(new_script);
+
+
+      });
+      //console.log( default );
+      //console.log( default.person );
+      
+      
+    </script>
+  </body>
+</html>
